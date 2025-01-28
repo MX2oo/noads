@@ -1,0 +1,10 @@
+version: '3'
+services:
+  adguardhome:
+    image: adguard/adguardhome:latest
+    container_name: adguardhome
+    restart: unless-stopped
+    network_mode: host # Utiliser le réseau de la VM directement
+    volumes:
+      - ./data:/opt/adguardhome/work
+      - ./config:/opt/adguardhome/conf
