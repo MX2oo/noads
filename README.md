@@ -13,7 +13,6 @@ Bienvenue dans le projet **AdGuard Home**. Ce guide détaille l’installation e
 - [Configuration du Routeur](#configuration-du-routeur)
 - [Ajout de la Liste OISD](#ajout-de-la-liste-oisd)
 - [Vérification](#vérification)
-- [Auteur](#auteur)
 
 ---
 
