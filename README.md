@@ -1,70 +1,92 @@
-Installation et Configuration d'AdGuard Home sous Docker
-Introduction
-Ce projet vise à installer et configurer AdGuard Home dans un conteneur Docker, ainsi qu'à l'intégrer à un routeur pour filtrer les publicités et trackers sur tout le réseau.
 
-1️⃣ Installation d'AdGuard Home sous Docker
-1.1 Prérequis
-Docker et Docker Compose installés sur une machine (VM ou serveur).
-Une adresse IP statique configurée pour la machine hôte.
-1.2 Lancement du conteneur
-Exécute la commande suivante dans le répertoire du projet :
+# **AdGuard Home Configuration sous Docker**
 
-bash
-Copier
-Modifier
-docker-compose up -d
-AdGuard Home sera accessible à l'adresse http://<IP_DE_TA_VM>:3000.
+Bienvenue dans le projet **AdGuard Home**. Ce guide détaille l’installation et la configuration d’AdGuard Home dans un conteneur Docker, avec l’intégration à un routeur pour filtrer les publicités et trackers à l’échelle du réseau.
 
-2️⃣ Configuration du Routeur
-2.1 Trouver l'IP de la machine hôte
-Exécute la commande :
+---
 
-bash
-Copier
-Modifier
-ip a
-Exemple d'IP : 192.168.10.177.
+## **Table des Matières**
 
-2.2 Configurer le serveur DNS sur le routeur
-Accède à l’interface web du routeur (http://192.168.10.1) et :
+- [Introduction](#introduction)
+- [Prérequis](#prérequis)
+- [Installation](#installation)
+- [Configuration du Routeur](#configuration-du-routeur)
+- [Ajout de la Liste OISD](#ajout-de-la-liste-oisd)
+- [Vérification](#vérification)
+- [Auteur](#auteur)
 
-Aller dans Paramètres DHCP.
-Renseigner 192.168.10.177 comme DNS primaire.
-Ajouter un DNS secondaire (1.1.1.1 ou 8.8.8.8).
-Sauvegarder et appliquer les modifications.
-Redémarrer les appareils connectés au routeur pour qu'ils prennent en compte le nouveau DNS.
-3️⃣ Accès à AdGuard Home
-Ouvrir un navigateur et aller sur http://192.168.10.177:3000.
-Suivre l’assistant de configuration :
-Définir un mot de passe administrateur.
-Configurer les DNS amont (ex: 1.1.1.1 ou 8.8.8.8).
-Activer les blocklists par défaut.
-4️⃣ Ajout de la Liste OISD
-4.1 Accéder aux filtres DNS
-Aller dans Settings > Filters > DNS Blocklists.
-Ajouter la liste OISD :
-arduino
-Copier
-Modifier
-https://big.oisd.nl/
-Cliquer sur Sauvegarder & Appliquer.
-Attendre quelques minutes pour l'activation.
-5️⃣ Vérification
-5.1 Tester si AdGuard Home est bien utilisé
-Exécuter la commande sur un PC :
-bash
-Copier
-Modifier
-nslookup google.com
-Résultat attendu : L'IP du serveur DNS doit être 192.168.10.177.
-Aller dans AdGuard Home > Query Log et vérifier que les requêtes DNS apparaissent.
-5.2 Tester le blocage des publicités
-Aller sur un site de test :
-🔗 ads-blocker.com/testing
-🔗 d3ward.github.io/adblock.html
-Vérifier que les publicités sont bien bloquées.
-🎯 Conclusion
-AdGuard Home est maintenant installé et configuré sous Docker.
-Le routeur est paramétré pour utiliser AdGuard Home comme DNS principal.
-La liste OISD est appliquée pour un blocage efficace des publicités et trackers.
-🚀 Ton réseau est maintenant protégé contre les publicités ! 🎉
+---
+
+## **Introduction**
+
+AdGuard Home est un outil puissant permettant de bloquer les publicités et les trackers à l’échelle d’un réseau. Ce projet explique comment le configurer rapidement à l’aide de Docker et l’intégrer au routeur pour protéger tous les appareils connectés.
+
+---
+
+## **Prérequis**
+
+Avant de commencer, assurez-vous d’avoir :
+- Une machine ou VM avec **Docker** et **Docker Compose** installés.
+- Une adresse IP statique assignée à la machine hôte.
+- Un accès à l’interface de configuration de votre routeur.
+
+---
+
+## **Installation**
+
+1. **Lancer le conteneur Docker**
+   - Placez-vous dans le répertoire du projet contenant le fichier `docker-compose.yml` et exécutez :
+     ```bash
+     docker-compose up -d
+     ```
+   - Une fois lancé, l’interface web d’AdGuard Home est accessible à l’adresse suivante :  
+     **http://<IP_DE_LA_VM>:3000**
+
+---
+
+## **Configuration du Routeur**
+
+1. **Trouver l’adresse IP de la machine hôte** :
+   - Exécutez la commande suivante :
+     ```bash
+     ip a
+     ```
+   - Notez l’adresse IP (ex. **192.168.1.177**).
+
+2. **Configurer le serveur DNS du routeur** :
+   - Accédez à l’interface web du routeur (ex. **http://192.168.1.1**).
+   - Renseignez :
+     - **DNS primaire** : `192.168.1.177` (IP de la machine hôte).
+     - **DNS secondaire** : `1.1.1.1` (Cloudflare) ou `8.8.8.8` (Google DNS).
+   - Appliquez les modifications et redémarrez les appareils connectés pour qu’ils prennent en compte le nouveau DNS.
+
+---
+
+## **Ajout de la Liste OISD**
+
+Pour améliorer le blocage des publicités et trackers, ajoutez la liste **OISD** à AdGuard Home :
+
+1. Accédez à **Settings > Filters > DNS Blocklists** dans l’interface web d’AdGuard Home.
+2. Ajoutez la liste :
+   ```
+   https://big.oisd.nl/
+   ```
+3. Cliquez sur **Sauvegarder & Appliquer**.
+4. Attendez quelques minutes pour l’activation complète des règles.
+
+---
+
+## **Vérification**
+
+1. **Tester si AdGuard Home est actif** :
+   - Exécutez :
+     ```cmd
+     nslookup google.com
+     ```
+     - **Résultat attendu** : Le serveur DNS doit être **192.168.1.177**.
+
+2. **Vérifier les requêtes DNS** :
+   - Dans l’interface d’AdGuard Home, allez dans **Query Log** et vérifiez que les requêtes apparaissent.
+
+3. **Tester le blocage des publicités** :
+
